@@ -84,7 +84,7 @@ void build_sensor_event_data(void *context, enum inv_icm20948_sensor sensortype,
 
 void pollIcm()
 {
-  //  DebugPrint("poll: ");
+  //  debugPrint("poll: ");
   inv_icm20948_poll_sensor(&icm_device_, (void *)0, build_sensor_event_data);
 }
 
@@ -106,8 +106,8 @@ int i2c_master_write_register(uint8_t address, uint8_t reg, uint32_t len, const 
   if (address != 0x69)
   {
 
-    DebugPrint("Odd address:");
-    DebugPrintln(address);
+    debugPrint("Odd address:");
+    debugPrintln(address);
   }
   Wire.beginTransmission(address);
   Wire.write(reg);
@@ -121,8 +121,8 @@ int i2c_master_read_register(uint8_t address, uint8_t reg, uint32_t len, uint8_t
   if (address != 0x69)
   {
 
-    DebugPrint("Odd read address:");
-    DebugPrintln(address);
+    debugPrint("Odd read address:");
+    debugPrintln(address);
   }
 
   Wire.beginTransmission(address);
@@ -164,7 +164,7 @@ void icm20948_apply_mounting_matrix(void)
   int ii;
   for (ii = 0; ii < INV_ICM20948_SENSOR_MAX; ii++)
   {
-    inv_icm20948_set_matrix(&icm_device_, cfg_mounting_matrix, (inv_icm20948_sensor)ii);
+    inv_icm20948_set_matrix(&icm_device_, cfg_mounting_matrix_, (inv_icm20948_sensor)ii);
   }
 }
 
@@ -172,9 +172,9 @@ void icm20948_apply_mounting_matrix(void)
 
 static void icm20948_set_fsr(void)
 {
-  inv_icm20948_set_fsr(&icm_device_, INV_ICM20948_SENSOR_ACCELEROMETER, (const void *)&cfg_acc_fsr);
-  inv_icm20948_set_fsr(&icm_device_, INV_ICM20948_SENSOR_RAW_GYROSCOPE, (const void *)&cfg_gyr_fsr);
-  inv_icm20948_set_fsr(&icm_device_, INV_ICM20948_SENSOR_GYROSCOPE, (const void *)&cfg_gyr_fsr);
+  inv_icm20948_set_fsr(&icm_device_, INV_ICM20948_SENSOR_ACCELEROMETER, (const void *)&cfg_acc_fsr_);
+  inv_icm20948_set_fsr(&icm_device_, INV_ICM20948_SENSOR_RAW_GYROSCOPE, (const void *)&cfg_gyr_fsr_);
+  inv_icm20948_set_fsr(&icm_device_, INV_ICM20948_SENSOR_GYROSCOPE, (const void *)&cfg_gyr_fsr_);
 }
 
 //--------------------------------------------------------------------
@@ -188,23 +188,23 @@ int icm20948_sensor_setup(void)
     Just get the whoami
   */
   rc = inv_icm20948_get_whoami(&icm_device_, &whoami);
-  DebugPrint("whoami = ");
-  DebugPrintln(whoami);
+  debugPrint("whoami = ");
+  debugPrintln(whoami);
 
   //delay(1000);
 
   /* Setup accel and gyro mounting matrix and associated angle for current board */
   inv_icm20948_init_matrix(&icm_device_);
 
-  DebugPrint("dmp image size = ");
-  DebugPrintln(sizeof(dmp3_image));
+  debugPrint("dmp image size = ");
+  debugPrintln(sizeof(dmp3_image));
   rc = inv_icm20948_initialize(&icm_device_, dmp3_image, sizeof(dmp3_image));
   while (rc != 0)
   {
     delay(500);
     rc = inv_icm20948_initialize(&icm_device_, dmp3_image, sizeof(dmp3_image));
-    DebugPrint("init got ");
-    DebugPrintln(rc);
+    debugPrint("init got ");
+    debugPrintln(rc);
     //  INV_MSG(INV_MSG_LEVEL_ERROR, "Initialization failed. Error loading DMP3...");
     //    return rc;
   }
