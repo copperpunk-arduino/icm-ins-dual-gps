@@ -12,7 +12,7 @@
 #include "SevenStateEkf.h"
 #include <Wire.h>
 
-#define debug_port SerialUSB
+#define debug_port Serial
 #define gps_port Serial1
 #define ins_port Serial2
 
