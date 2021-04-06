@@ -1,15 +1,17 @@
-boolean imuTasks() {
-  if (new_icm_data_) {
+boolean imuTasks()
+{
+  if (new_icm_data_)
+  {
     new_icm_data_ = false;
-    gyro_count_++;
-    imu_time_ = micros();
-    float dt = (imu_time_ - imu_time_prev_) / 1000000.0f;
-    //    debugPrintln("dt: " + String(dt, 4));
-    imu_time_prev_ = imu_time_;
+    imu_count_++;
+    imu_time_us_ = micros();
+    float dt = (imu_time_us_ - imu_time_prev_us_) * (1e-6);
+    //  DebugPrintln("dt: " + String(dt, 4));
+    DebugPrintln("imu: " + String(imu_time_us_*(1e-6), 4));
+    imu_time_prev_us_ = imu_time_us_;
 
-
-
-    if (!attitude_established_) {
+    if (!attitude_established_)
+    {
       //        debug_port_.print("soft reset");
       //      imu_.getAccelBody(accel_body_);
       //      imu_.softReset(accel_body_);
@@ -17,25 +19,18 @@ boolean imuTasks() {
       attitude_established_ = true;
     }
 
-    imu_.UpdateImu(quat_);
-    imu_.GetAttitude(attitude_);
-    printAttitude();
-//    printQuat();
-    //    printGyroFloat();
-    //    imu_.calculateRollPitchYaw();
-    //    imu_.getAccelBody(accel_body_);
-    //    imu_.getGyro(gyro_float_);
-    //    attitude_[0] = imu_.getRoll();
-    //    attitude_[1] = imu_.getPitch();
-    //    attitude_[2] = imu_.getYaw();
-
+    imu_.updateImuWithQuat(quat_);
+    imu_.getAttitudeRad(attitude_rad_);
     //      // Update EKF
-    if (!gps_valid_fix_) {
+    if (!gps_valid_fix_)
+    {
       dt = 0.0f;
-    } else {
-      DebugPrintln("valid");
     }
-    ekf_.Predict(attitude_, accel_body_, dt);
+    // else
+    // {
+    //   DebugPrintln("valid");
+    // }
+    ekf_.Predict(attitude_rad_, accel_body_mpss_, dt);
     return true;
   }
   //  }
