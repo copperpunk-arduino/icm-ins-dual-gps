@@ -18,7 +18,7 @@ boolean imuTasks()
       dt = 0.0f;
     }
 
-    imu_.updateImuWithQuat(quat_);
+    imu_.updateImuWithQuatDifferentialYaw(quat_);
     imu_.getAttitudeRad(attitude_rad_);
 
     ekf_.Predict(attitude_rad_, accel_body_mpss_, dt);

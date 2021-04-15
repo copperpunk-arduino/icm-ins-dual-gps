@@ -83,7 +83,7 @@ void gpsTasks()
       {
         delta_yaw_rad = ekf_.UpdateFromHeading(rel_heading_rad_);
       }
-      imu_.rotateDeltaYawRad(delta_yaw_rad);
+      imu_.rotateYawRad(delta_yaw_rad);
     }
   }
 }

@@ -3,7 +3,7 @@
 #include <Icm20948.h>
 #include <SensorTypes.h>
 #include "Icm20948MPUFifoControl.h"
-#include "ImuUtils.h"
+#include "ImuExternalYaw.h"
 #include "UbxGps.h"
 #include "SevenStateEkf.h"
 #include <Wire.h>
@@ -93,7 +93,7 @@ uint8_t I2C_Address = 0x69;
 inv_icm20948_t icm_device_;
 bool new_icm_data_ = false;
 
-ImuUtils imu_;
+ImuExternalYaw imu_;
 float accel_body_mpss_[3];
 float gyro_rps_[3];
 float quat_[4];
