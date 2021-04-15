@@ -63,7 +63,7 @@ void gpsTasks()
     if ((dt > 0) && gps_.isRelPositionDistanceWithinThreshold(kExpectedAntennaDistanceMm, kAntenntaDistanceAccuracyThresholdMm))
     {
       rel_heading_time_prev_sec_ = rel_heading_time_sec_;
-      rel_heading_rad_ = (gps_.relHeadingDeg() - antenna_offset_deg_) * kDeg2Rad;
+      rel_heading_rad_ = (gps_.relHeadingDeg() - kAntennaOffsetDeg) * kDeg2Rad;
       debugPrintln("rel yaw: " + String(rel_heading_rad_ * kRad2Deg, 2));
       if (rel_heading_rad_ < 0)
       {

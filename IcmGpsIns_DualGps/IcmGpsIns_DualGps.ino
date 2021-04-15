@@ -126,7 +126,7 @@ long system_time_prev_us_;
 double rel_heading_time_sec_;
 double rel_heading_time_prev_sec_ = 0;
 float rel_heading_rad_ = 0.F;
-float antenna_offset_deg_ = 90.f;
+const float kAntennaOffsetDeg = -90.f;
 const float kExpectedAntennaDistanceMm = 1822.5f;
 const float kAntenntaDistanceAccuracyThresholdMm = 200.f;
 bool heading_established_ = false;

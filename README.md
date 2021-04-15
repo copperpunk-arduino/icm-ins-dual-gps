@@ -17,6 +17,8 @@ Once these are installed, you can choose to publish your VectorNav binary messag
 For more information on how to hook up the simpleRTK2B+heading board, please refer to ArduSimple's documentation:
 https://www.ardusimple.com/simplertk2heading-hookup-guide/
 
+> NOTE: You must specifiy the distance between your GPS antennas (`kExpectedAntennaDistanceMm`) and the antenna offset (`kAntennaOffsetDeg`). If you draw a line from the BASE antenna to the HEADING antenna, the offset is defined as the angle from the front of the vehicle (X-axis in body coordinates) to this line. For example, if your BODY antenna is on the left wing and the HEADING antenna is on the right wing, your antenna offset is 90 degrees.
+
 The final result (without antennas attached) is shown below. We've attached a [4-pin polarized connecter](http://www.hansenhobbies.com/products/connectors/pt1inlpconnectors/) for transmitting the VectorNav message over a hardware serial port, but as stated, you can use the USB serial port if you prefer.
 <p align="center"><img src="https://static.wixstatic.com/media/07c139_fa161f1471624ed0a459e64061976e64~mv2.jpg" width="50%"><img src="https://static.wixstatic.com/media/07c139_f1a0a76a02804de7b966cbfdd807d9b8~mv2.jpg" width=50%</p>
 <p align="center"><img src="https://static.wixstatic.com/media/07c139_6fbc901f3bc34d10bf79c02c932e6c9f~mv2.jpg" width=50%><img src="https://static.wixstatic.com/media/07c139_36ea9a80b61e4dc38220b24f4baf99d3~mv2.jpg" width="50%"></p>
