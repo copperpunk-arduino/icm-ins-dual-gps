@@ -5,15 +5,17 @@
 #include "Icm20948MPUFifoControl.h"
 #include "ImuExternalYaw.h"
 #include "UbxGps.h"
+#include "UbxRpyllas.h"
 #include "SevenStateEkf.h"
 #include <Wire.h>
 
 // #define USE_LED
-#define PUBLISH_VN
+// #define PUBLISH_VN
+#define PUBLISH_UBX
 
 #define debug_port Serial
-#define gps_port Serial1
-#define ins_port Serial2
+#define gps_port Serial2
+#define ins_port Serial1
 
 // #define DEBUG
 #ifdef DEBUG
@@ -141,11 +143,16 @@ double gps_fix_time_sec_;
 double gps_fix_time_prev_sec_ = 0;
 bool gps_valid_fix_ = false;
 
-// ------------ VectorNav Publishing Definitions ------------
+// ------------ VectorNav Message Definitions ------------
 const int kVnBinary1Length = 76;
 byte vn_binary1_buffer_[kVnBinary1Length];
-const unsigned int kPublishVnBinary1IntervalMs = 20; // MUST BE MULTIPLE OF kImuIntervalMs
-const unsigned int kPublishVnBinary1Count = kPublishVnBinary1IntervalMs / kImuIntervalMs;
+
+// ------------ UbxRpyllas Defitions
+UbxRpyllas ubx_rpyllas_;
+
+// ------------ INS Publishing Definitions
+const unsigned int kPublishInsIntervalMs = 20; // MUST BE MULTIPLE OF kImuIntervalMs
+const unsigned int kPublishInsCount = kPublishInsIntervalMs / kImuIntervalMs;
 
 // ------------ Clock Definitions ------------
 unsigned long led_time_prev_us_ = 0;
@@ -193,9 +200,11 @@ void setup()
   gps_port.setTimeout(1);
   cycleGps();
   debugPrintln(F("Done!"));
-  // ----------- PublishVN Setup --------------
+// ----------- PublishVN Setup --------------
+#ifdef PUBLISH_VN
   vn_binary1_buffer_[0] = 0xFA;
   vn_binary1_buffer_[1] = 1;
+#endif
 }
 
 void loop()
@@ -206,9 +215,13 @@ void loop()
   {
     main_loop_count_++;
   }
-  if (main_loop_count_ == kPublishVnBinary1Count)
+  if (main_loop_count_ == kPublishInsCount)
   {
+#if defined(PUBLISH_VN)
     publishVnBinary1();
+#elif defined(PUBLISH_UBX)
+    publishUbxRpyllas();
+#endif
     main_loop_count_ = 0;
   }
   clockTasks();
